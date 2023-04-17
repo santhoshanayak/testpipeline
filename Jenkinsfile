@@ -1,19 +1,45 @@
-pipeline{
+pipeline {
     agent any
 
-    stages{
-        stage("build") {
+    stages {
+        stage('Header_1') {
             steps {
-                echo 'Hello'
-            }
-        stage("Test"){
-            steps {
-                echo 'World'            
+                echo '1'
             }
         }
-        stage ("Deploy")
-            steps{
-                echo 'Deployed'
+        stage('Header_2') {
+            steps {
+                echo '2'
+            }
+        }
+        
+        stage('Parallel') { // add this
+            parallel {
+                stage('First Parallel Stage') {
+                    environment {
+                        TEST = 3
+                    }
+                    
+                    steps {
+                        echo "$TEST"
+                    }
+                }
+                
+                stage('Execute this together') { // add this
+                    stages {
+                        stage('Another_One') {
+                            steps {
+                                echo "4"
+                            }
+                        }
+                        
+                        stage('Yet Another_One') {
+                            steps {
+                                echo "5"
+                            }
+                        }
+                    }
+                }
             }
         }
     }
